@@ -1,5 +1,5 @@
 <template>
-      <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12">
+      <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12 all">
         <q-card color="lime-4" text-color="fade">
           <q-card-actions class="float-right">
             <q-fab icon="more_vert" direction="down">
@@ -36,5 +36,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
+.all
+  transition: all 0.9s ease-in-out
+  transform: rotateX(-180deg)
+  transform-style preserve-3d
 </style>

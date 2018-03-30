@@ -1,14 +1,13 @@
 <template>
   <q-page padding>
   <div class="row">
-    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="add">
-      <q-card color="white">
-        <q-card-media>
-          <img src="statics/img_452165.png" alt="" @click="flipOut">
-        </q-card-media>
-      </q-card>
+    <div
+    class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
+    id="add"
+    @click="flipOut">
+      <div class="add" style="background-image:url('statics/img_452165.png')"/>
     </div>
-    <card/>
+    <!-- <card id="all"/> -->
   </div>
   </q-page>
 </template>
@@ -17,13 +16,20 @@
 @import '~variables'
 body
   background: $tertiary
+.add
+  background center no-repeat
+  background-size 60%
+  width 100%
+  height 100%
 #add
-  z-index 999999
+  height 22.4pc
+  background white
+  position absolute
+  z-index 9999999
   cursor pointer
   transform-style preserve-3d
   backface-visibility hidden
   transition all 0.9s ease-in-out
-  position absolute
 .q-card-media
   padding: 20px
 .q-card-media img
@@ -55,7 +61,8 @@ export default {
       this.loading = true
     },
     flipOut: () => {
-      document.getElementById('add').style.transform = 'rotateX(-179deg)'
+      document.getElementById('add').style.transform = 'rotateX(-180deg)'
+      document.getElementById('all').style.transform = 'rotateX(0deg)'
     }
   },
   computed: {
