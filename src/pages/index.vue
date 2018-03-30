@@ -1,8 +1,8 @@
 <template>
   <q-page padding>
   <div class="row">
-    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12">
-      <q-card color="white" id="add">
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="add">
+      <q-card color="white">
         <q-card-media>
           <img src="statics/img_452165.png" alt="" @click="flipOut">
         </q-card-media>
@@ -22,7 +22,8 @@ body
   cursor pointer
   transform-style preserve-3d
   backface-visibility hidden
-  transition all 0.4s ease-in-out
+  transition all 0.9s ease-in-out
+  position absolute
 .q-card-media
   padding: 20px
 .q-card-media img
@@ -54,7 +55,7 @@ export default {
       this.loading = true
     },
     flipOut: () => {
-      document.getElementById('add').style.transform = 'rotateX(90deg)'
+      document.getElementById('add').style.transform = 'rotateX(-179deg)'
     }
   },
   computed: {
