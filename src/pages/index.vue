@@ -1,10 +1,12 @@
 <template>
   <q-page padding>
   <div class="row">
+    <myform id="form"/>
     <div
     class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
     id="add"
-    @click="flipOut">
+    @click="flipOut"
+    v-ripple>
       <div class="add" style="background-image:url('statics/img_452165.png')"/>
     </div>
     <!-- <card id="all"/> -->
@@ -46,9 +48,11 @@ body
 
 <script>
 import Card from 'components/card'
+import Myform from 'components/form'
 export default {
   name: 'PageIndex',
   components: {
+    Myform,
     Card
   },
   data () {
@@ -62,7 +66,7 @@ export default {
     },
     flipOut: () => {
       document.getElementById('add').style.transform = 'rotateX(-180deg)'
-      document.getElementById('all').style.transform = 'rotateX(0deg)'
+      document.getElementById('form').style.transform = 'rotateX(0deg)'
     }
   },
   computed: {

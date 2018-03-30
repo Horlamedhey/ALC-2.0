@@ -1,3 +1,3 @@
-# Quasar App
+# Flip 'n' Join
 
 > WIP

@@ -14,6 +14,7 @@
     </q-layout-header>
     <q-page-container>
       <router-view />
+      <q-ajax-bar/>
     </q-page-container>
   </q-layout>
 </template>
