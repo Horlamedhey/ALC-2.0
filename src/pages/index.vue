@@ -1,7 +1,9 @@
 <template>
   <q-page padding>
   <div class="row">
-    <myform id="form"/>
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12 form" id="form">
+      <myform />
+    </div>
     <div
     class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
     id="add"
@@ -9,7 +11,7 @@
     v-ripple>
       <div class="add" style="background-image:url('statics/img_452165.png')"/>
     </div>
-    <!-- <card id="all"/> -->
+    <card id="all"/>
   </div>
   </q-page>
 </template>
@@ -32,6 +34,9 @@ body
   transform-style preserve-3d
   backface-visibility hidden
   transition all 0.9s ease-in-out
+#form
+  position absolute
+  z-index 999999
 .q-card-media
   padding: 20px
 .q-card-media img

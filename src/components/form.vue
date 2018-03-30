@@ -1,11 +1,19 @@
 <template>
-<div class="col-lg-3 col-md-6 col-xl-2 col-xs-12 form">
   <q-card>
-  <q-card-media>
-    <img src="statics/download (1).png" alt="">
-  </q-card-media>
+    <q-card-media v-ripple>
+      <img src="statics/download (1).png" alt="">
+    </q-card-media>
+    <q-card-separator/>
+    <q-card-main>
+      <q-input type="text" float-label="Name"/>
+      <q-input type="email" float-label="Email"/>
+      <q-input type="tel" float-label="Phone"/>
+    </q-card-main>
+    <q-card-separator/>
+    <q-card-actions>
+      <q-btn>Submit</q-btn>
+    </q-card-actions>
   </q-card>
-</div>
 </template>
 
 <script>
@@ -23,4 +31,6 @@ export default {
   transform: rotateX(-180deg)
   transform-style preserve-3d
   background white
+.q-card-media
+  cursor pointer
 </style>
