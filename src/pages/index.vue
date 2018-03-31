@@ -33,7 +33,11 @@
     class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
     id="add"
     @click="flipAddOut">
-          <div class="add" style="background-image:url('statics/img_452165.png')"/>
+      <div class="add" style="background-image:url('statics/img_452165.png')">
+        <q-tooltip>
+          Click here to add a new contact
+        </q-tooltip>
+      </div>
     </div>
   </div>
   </q-page>

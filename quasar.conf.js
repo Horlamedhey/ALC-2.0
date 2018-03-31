@@ -71,7 +71,8 @@ module.exports = function (ctx) {
         'QCardSeparator',
         'QCardActions',
         'QParallax',
-        'QAjaxBar'
+        'QAjaxBar',
+        'QTooltip'
       ],
       directives: [
         'Ripple'
