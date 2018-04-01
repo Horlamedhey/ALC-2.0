@@ -7,21 +7,27 @@
     <q-uploader id="upload" :url="url" extensions=".gif,.jpg,.jpeg,.png"/>
     <q-card-separator/>
     <q-card-main>
-      <q-input type="text"
-      float-label="Name" clearable autocomplete
-      :loading="loadingName" @focus="loadingName = true"
-      @blur="loadingName = false"
-      v-model="contact.name"/>
-      <q-input type="email"
-      float-label="Email" clearable autocomplete
-      :loading="loadingEmail" @focus="loadingEmail = true"
-      @blur="loadingEmail = false"
-      v-model="contact.email"/>
-      <q-input type="tel"
-      float-label="Phone" clearable autocomplete
-      :loading="loadingPhone" @focus="loadingPhone = true"
-      @blur="loadingPhone = false"
-      v-model="contact.phone"/>
+      <q-field :error="error" error-label="Sorry, that name already exist.">
+        <q-input type="text"
+        float-label="Name" clearable autocomplete
+        :loading="loadingName" @focus="loadingName = true"
+        @blur="loadingName = false"
+        v-model="contact.name" @keydown="check"/>
+      </q-field>
+      <q-field :error="error" error-label="Sorry, that email already exist.">
+        <q-input type="email"
+        float-label="Email" clearable autocomplete
+        :loading="loadingEmail" @focus="loadingEmail = true"
+        @blur="loadingEmail = false"
+        v-model="contact.email"/>
+      </q-field>
+      <q-field :error="error" error-label="Sorry, that phone already exist.">
+        <q-input type="tel"
+        float-label="Phone" clearable autocomplete
+        :loading="loadingPhone" @focus="loadingPhone = true"
+        @blur="loadingPhone = false"
+        v-model="contact.phone"/>
+      </q-field>
     </q-card-main>
     <q-card-separator/>
     <q-card-actions>
@@ -44,7 +50,8 @@ export default {
         name: '',
         email: '',
         phone: ''
-      }
+      },
+      error: true
     }
   },
   computed: {
