@@ -1,37 +1,48 @@
 <template>
-  <q-page padding>
-  <div class="row">
-    <myform id="form"/>
-    <div
-    class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
-    id="add"
-    @click="flipOut"
-    v-ripple>
-      <div class="add" style="background-image:url('statics/img_452165.png')"/>
+  <q-page padding class="row">
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="card">
+      <card/>
     </div>
-    <!-- <card id="all"/> -->
-  </div>
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="new">
+      <new></new>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="add" @click="flipAddOut">
+      <div class="addbg" style="background-image:url('statics/img_452165.png')">
+        <q-tooltip>
+          Click here to add a new contact
+        </q-tooltip>
+      </div>
+    </div>
   </q-page>
 </template>
 
 <style lang="stylus">
 @import '~variables'
-body
-  background: $tertiary
-.add
+.row .col-md-6
+  height 22.4pc
+.addbg
   background center no-repeat
-  background-size 60%
+  background-size 50%
   width 100%
   height 100%
 #add
-  height 22.4pc
-  background white
+  background $primary
   position absolute
-  z-index 9999999
+  height 22.4pc
   cursor pointer
   transform-style preserve-3d
-  backface-visibility hidden
   transition all 0.9s ease-in-out
+#new
+  overflow hidden
+  position absolute
+  background $light
+  transition: all 0.9s ease-in-out
+  transform: rotateX(-360deg)
+  transform-style preserve-3d
+#new .q-btn
+  display block
+  margin 0 auto
+  padding 10px 20px
 .q-card-media
   padding: 20px
 .q-card-media img
@@ -44,29 +55,40 @@ body
   border-left: 0.1px solid #000
 .menu
   padding: 15px
+#card
+  display none
+  z-index 9999999
+  transition: all 0.9s ease-in-out
+  transform: rotateX(-180deg)
+  transform-style preserve-3d
 </style>
 
 <script>
 import Card from 'components/card'
-import Myform from 'components/form'
+import New from 'components/new'
 export default {
   name: 'PageIndex',
   components: {
-    Myform,
-    Card
+    Card,
+    New
   },
   data () {
     return {
-      loading: false
+      contacts: [
+        {
+          name: 'Gafar Olamide Ajao',
+          email: 'Horlasco34@gmail.com',
+          phone: '09065954982'
+        }
+      ]
     }
   },
   methods: {
-    load: () => {
-      this.loading = true
-    },
-    flipOut: () => {
+    flipAddOut: () => {
       document.getElementById('add').style.transform = 'rotateX(-180deg)'
-      document.getElementById('form').style.transform = 'rotateX(0deg)'
+      document.getElementById('new').style.transform = 'rotateX(360deg)'
+      document.getElementById('new').style.zIndex = '999999999999'
+      document.getElementById('new').style.height = 'unset'
     }
   },
   computed: {

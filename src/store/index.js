@@ -8,6 +8,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     example
+  },
+  state: {
+    contacts: []
+  },
+  mutations: {
+    addContact (state, contact) {
+      state.contacts.push(contact)
+    }
   }
 })
 
