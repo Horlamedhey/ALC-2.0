@@ -1,79 +1,45 @@
 <template>
-  <q-page padding>
-  <div class="row">
-    <card id="card"/>
-    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12 form" id="form">
-    <q-card-media v-ripple>
-      <img src="statics/download (1).png" alt="">
-    </q-card-media>
-    <q-card-separator/>
-    <q-card-main>
-      <q-input type="text"
-      float-label="Name" clearable autocomplete
-      :loading="loadingName" @focus="loadingName = true"
-      @blur="loadingName = false"
-      value=""/>
-      <q-input type="email"
-      float-label="Email" clearable autocomplete
-      :loading="loadingEmail" @focus="loadingEmail = true"
-      @blur="loadingEmail = false"
-      value=""/>
-      <q-input type="tel"
-      float-label="Phone" clearable autocomplete
-      :loading="loadingPhone" @focus="loadingPhone = true"
-      @blur="loadingPhone = false"
-      value=""/>
-    </q-card-main>
-    <q-card-separator/>
-    <q-card-actions>
-      <q-btn color="pink-10" @click="flipFormOut">Flip</q-btn>
-    </q-card-actions>
+  <q-page padding class="row">
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="card">
+      <card/>
     </div>
-    <div
-    class="col-lg-3 col-md-6 col-xl-2 col-xs-12"
-    id="add"
-    @click="flipAddOut">
-      <div class="add" style="background-image:url('statics/img_452165.png')">
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="new">
+      <new></new>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xl-2 col-xs-12" id="add" @click="flipAddOut">
+      <div class="addbg" style="background-image:url('statics/img_452165.png')">
         <q-tooltip>
           Click here to add a new contact
         </q-tooltip>
       </div>
     </div>
-  </div>
   </q-page>
 </template>
 
 <style lang="stylus">
 @import '~variables'
-body
-  background: $tertiary
-.add
+.row .col-md-6
+  height 22.4pc
+.addbg
   background center no-repeat
-  background-size 60%
+  background-size 50%
   width 100%
   height 100%
 #add
-  height 22.4pc
-  background white
+  background $primary
   position absolute
-  z-index 9999999
+  height 22.4pc
   cursor pointer
   transform-style preserve-3d
-  backface-visibility hidden
   transition all 0.9s ease-in-out
-#form
-  position absolute
-  z-index 9999999
-  height 22.4pc
+#new
   overflow hidden
-  transition 25s
+  position absolute
+  background $light
   transition: all 0.9s ease-in-out
-  transform: rotateX(-180deg)
+  transform: rotateX(-360deg)
   transform-style preserve-3d
-  background white
-.q-card-media
-  cursor pointer
-#form .q-btn
+#new .q-btn
   display block
   margin 0 auto
   padding 10px 20px
@@ -90,9 +56,7 @@ body
 .menu
   padding: 15px
 #card
-  // display none
-  position absolute
-  visibility hidden
+  display none
   z-index 9999999
   transition: all 0.9s ease-in-out
   transform: rotateX(-180deg)
@@ -101,32 +65,30 @@ body
 
 <script>
 import Card from 'components/card'
+import New from 'components/new'
 export default {
   name: 'PageIndex',
   components: {
-    Card
+    Card,
+    New
   },
   data () {
     return {
-      loadingName: false,
-      loadingEmail: false,
-      loadingPhone: false
+      contacts: [
+        {
+          name: 'Gafar Olamide Ajao',
+          email: 'Horlasco34@gmail.com',
+          phone: '09065954982'
+        }
+      ]
     }
   },
   methods: {
     flipAddOut: () => {
       document.getElementById('add').style.transform = 'rotateX(-180deg)'
-      document.getElementById('form').style.transform = 'rotateX(0deg)'
-      document.getElementById('form').style.height = 'unset'
-    },
-    flipFormOut: () => {
-      document.getElementById('card').style.visibility = 'visible'
-      document.getElementById('form').style.transform = 'rotateX(-180deg)'
-      document.getElementById('card').style.transform = 'rotateX(0deg)'
-      document.getElementById('form').style.zIndex = '999999'
-      // document.getElementById('add').style.visibility = 'hidden'
-      // document.getElementById('form').style.width = 'unset'
-      document.getElementById('form').style.height = '22.4pc'
+      document.getElementById('new').style.transform = 'rotateX(360deg)'
+      document.getElementById('new').style.zIndex = '999999999999'
+      document.getElementById('new').style.height = 'unset'
     }
   },
   computed: {

@@ -72,7 +72,8 @@ module.exports = function (ctx) {
         'QCardActions',
         'QParallax',
         'QAjaxBar',
-        'QTooltip'
+        'QTooltip',
+        'QUploader'
       ],
       directives: [
         'Ripple'
@@ -84,6 +85,9 @@ module.exports = function (ctx) {
     },
     // animations: 'all' --- includes all animations
     animations: [
+      'fadeIn',
+      'fadeOut',
+      'bounce'
     ],
     pwa: {
       cacheExt: 'js,html,css,ttf,eot,otf,woff,woff2,json,svg,gif,jpg,jpeg,png,wav,ogg,webm,flac,aac,mp4,mp3',
