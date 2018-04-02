@@ -1,8 +1,8 @@
 <template>
-        <q-card color="lime-4" text-color="fade">
+        <q-card color="lime-4" text-color="fade" class="cards">
           <q-card-actions class="float-right">
             <q-fab icon="more_vert" direction="down">
-              <q-fab-action color="primary" @click="someMethod" icon="close"/>
+              <q-fab-action color="primary" @click="someMethod" icon="delete"/>
               <q-fab-action color="secondary" @click="someMethod" icon="edit"/>
             </q-fab>
           </q-card-actions>
@@ -10,12 +10,12 @@
             <img src="statics/quasar-logo.png" alt="">
           </q-card-media>
           <q-card-title>
-            dssdaf
+            {{$store.state.contacts[0].name}}
           <q-card-separator />
           </q-card-title>
           <q-card-main>
-            <p>sdaas</p>
-            <p>sdaasd</p>
+            <p>{{$store.state.contacts[0].email}}</p>
+            <p>{{$store.state.contacts[0].phone}}</p>
           </q-card-main>
           <q-card-separator />
           <q-card-actions class="row">
@@ -33,9 +33,6 @@ export default {
     }
   },
   mounted () {
-    this.$root.$on('contacts', () => {
-      console.log(this.contacts)
-    })
   }
 }
 </script>
