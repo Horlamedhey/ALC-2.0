@@ -1,9 +1,9 @@
 <template>
   <q-page padding class="row">
-      <q-card v-for="contact in added" :key="contact.id" :id="contact.ID" class="cards animated flip" text-color="white">
+      <q-card v-for="(contact,index) in added" :key="contact.id"  :id="contact.ID" class="cards animated flip" text-color="white">
           <q-card-actions class="float-right">
             <q-fab icon="more_vert" direction="down">
-              <q-fab-action color="primary" @click="remove()" icon="delete"/>
+              <q-fab-action color="primary" @click="remove(index)" icon="delete"/>
               <q-fab-action color="secondary" @click="edit()" icon="edit"/>
             </q-fab>
           </q-card-actions>
@@ -24,7 +24,7 @@
             <q-btn class="col mail" flat><i class="fa fa-envelope"></i></q-btn>
           </q-card-actions>
         </q-card>
-    <div class="col-lg-3 col-md-5 col-xl-2 col-xs-12" id="start">
+    <div id="start">
       <div id="new" class="animated flip">
         <q-card>
           <span id="span">
@@ -79,6 +79,7 @@
 #start
   position relative
   height 22.4pc
+  width 15pc
 .addbg
   background center no-repeat
   background-size 50%
@@ -88,7 +89,7 @@
   background $primary
   position absolute
   height 22.4pc
-  width 93%
+  width 100%
   cursor pointer
   z-index 2
   transform-style preserve-3d
@@ -98,7 +99,7 @@
   display none
   z-index 1
   background $info
-  width 93%
+  width 100%
   height 22.4pc
   padding-top 2pc
   transition: all 0.9s ease-in-out
@@ -134,7 +135,7 @@ random(min,max)
   return floor(math(0, 'random')*(max - min + 1) + min)
 for num in (1..1000)
   #card-{num}
-    background cards_colors[random(0, 16)]
+    background cards_colors[random(0, 15)]
 .animated
   -webkit-animation-duration 1s
   animation-duration 1s
