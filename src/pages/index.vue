@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="row">
-      <q-card v-for="contact in added" :key="contact.id" :id="contact.ID" class="cards animated flip" color="green" text-color="fade">
+      <q-card v-for="contact in added" :key="contact.id" :id="contact.ID" class="cards animated flip" text-color="white">
           <q-card-actions class="float-right">
             <q-fab icon="more_vert" direction="down">
               <q-fab-action color="primary" @click="remove()" icon="delete"/>
@@ -129,6 +129,12 @@
   height fit-content
 .cards
   height 22.4pc
+cards_colors = ( red blue green yellow pink purple #1a1aff #993366 #66ffff #99cc00 #ff9900 #669900 teal #333300 #0099cc #ff00ff )
+random(min,max)
+  return floor(math(0, 'random')*(max - min + 1) + min)
+for num in (1..1000)
+  #card-{num}
+    background cards_colors[random(0, 16)]
 .animated
   -webkit-animation-duration 1s
   animation-duration 1s
@@ -196,6 +202,7 @@ export default {
     },
     flipFormOut () {
       let {ID, name, email, phone} = this.add
+      ID = 'card-' + ID
       this.added.push(
         {
           ID,
