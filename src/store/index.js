@@ -10,12 +10,8 @@ const store = new Vuex.Store({
     example
   },
   state: {
-    contacts: []
   },
   mutations: {
-    addContact (state, contact) {
-      state.contacts.push(contact)
-    }
   }
 })
 

@@ -7,7 +7,7 @@
         :inverted="$q.theme === 'ios'"
       >
         <q-toolbar-title>
-          Flip 'n' Join
+          Flip 'n' Add
           <div slot="subtitle">Connecting you with millions of user</div>
         </q-toolbar-title>
       </q-toolbar>
@@ -36,4 +36,7 @@ export default {
 </script>
 
 <style>
+body{
+  padding-left: 4pc;
+}
 </style>
