@@ -74,7 +74,9 @@ module.exports = function (ctx) {
         'QParallax',
         'QAjaxBar',
         'QTooltip',
-        'QUploader'
+        'QUploader',
+        'QSpinner',
+        'QSpinnerPie'
       ],
       directives: [
         'Ripple'
