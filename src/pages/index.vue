@@ -18,8 +18,16 @@
         <q-card :id="contact.ID" class="cards animated flip" text-color="white">
             <q-card-actions class="float-right">
               <q-fab icon="more_vert" direction="down" push glossy>
-                <q-fab-action color="secondary" @click="edit(index)" push glossy icon="edit" />
-                <q-fab-action color="primary" @click="remove(index)" push glossy icon="delete" />
+                <q-fab-action color="secondary" @click="edit(index)" push glossy icon="edit">
+                  <q-tooltip anchor="top right" self="bottom left">
+                    Edit
+                  </q-tooltip>
+                </q-fab-action>
+                <q-fab-action color="primary" @click="remove(index)" push glossy icon="delete">
+                  <q-tooltip anchor="top right" self="bottom left">
+                    Delete
+                  </q-tooltip>
+                </q-fab-action>
               </q-fab>
             </q-card-actions>
             <q-card-media>
@@ -34,7 +42,7 @@
               <p>{{contact.phone}}</p>
             </q-card-main>
             <q-card-separator />
-            <q-card-actions class="row">
+            <q-card-actions class="justify-around">
               <q-btn class="col call" flat><i class="fa fa-phone"></i></q-btn>
               <q-btn class="col mail" flat><i class="fa fa-envelope"></i></q-btn>
             </q-card-actions>
@@ -58,10 +66,11 @@
                   v-model="contact.phone" @keyup.enter="editSave(index)"/>
                 </q-card-main>
                 <q-card-separator/>
-                <q-card-actions>
-                  <q-btn id="editSave" @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
+                <q-card-actions class="justify-around">
+                  <q-btn @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
                     <q-spinner-pie slot="loading" />
                   </q-btn>
+                  <q-btn @click="canceleEdit(index)" color="secondary" label="Cancel" />
                 </q-card-actions>
               </q-card>
             </div>
@@ -170,10 +179,7 @@
   margin: 0 auto
   width: auto
 .q-card-actions .call
-  border-right: 0.1px solid #000
   padding: $pad
-.q-card-actions .mail
-  border-left: 0.1px solid #000
 .menu
   padding: 15px
 #cards
@@ -346,6 +352,9 @@ export default {
         // DON'T forget to reset loading state:
         this.added[index].saving = false
       }, 1500)
+    },
+    canceleEdit (index) {
+      this.added[index].edit = false
     }
   },
   mounted () {
