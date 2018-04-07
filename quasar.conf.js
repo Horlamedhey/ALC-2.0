@@ -76,7 +76,8 @@ module.exports = function (ctx) {
         'QTooltip',
         'QUploader',
         'QSpinner',
-        'QSpinnerPie'
+        'QSpinnerPie',
+        'QAlert'
       ],
       directives: [
         'Ripple'
@@ -90,7 +91,11 @@ module.exports = function (ctx) {
     animations: [
       'fadeIn',
       'fadeOut',
-      'bounce'
+      'bounce',
+      'bounceInLeft',
+      'bounceOutRight',
+      'flip',
+      'flipOutY'
     ],
     pwa: {
       cacheExt: 'js,html,css,ttf,eot,otf,woff,woff2,json,svg,gif,jpg,jpeg,png,wav,ogg,webm,flac,aac,mp4,mp3',

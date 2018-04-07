@@ -9,9 +9,18 @@
         <q-toolbar-title>
           Flip 'n' Add
           <div slot="subtitle">Connecting you with millions of user</div>
-        </q-toolbar-title>
+        </q-toolbar-title><q-btn
+        flat round dense
+        @click="showRight = !showRight"
+        icon="menu"
+      />
       </q-toolbar>
     </q-layout-header>
+      <q-layout-drawer side="right" v-model="showRight">
+        <q-list>
+          <q-item>me</q-item>
+        </q-list>
+      </q-layout-drawer>
     <q-page-container>
       <router-view />
       <q-ajax-bar/>
@@ -26,7 +35,8 @@ export default {
   name: 'LayoutDefault',
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      showRight: false
     }
   },
   methods: {

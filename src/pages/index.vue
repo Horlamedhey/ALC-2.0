@@ -1,5 +1,19 @@
 <template>
   <q-page padding class="row">
+      <transition
+        enter-active-class="animated flip"
+        leave-active-class="animated flipOutY"
+        appear>
+        <q-alert
+          v-if="$store.state.alert"
+          style="left: 45pc; top: 4pc"
+          type="negative"
+          appear
+          :actions="[{ label: 'Dismiss', handler: () => { $store.commit('negateAlert') } }]"
+          class="q-mb-sm fixed">
+          Please input valid details
+        </q-alert>
+      </transition>
     <div v-for="(contact,index) in added" :key="contact.id">
         <q-card :id="contact.ID" class="cards animated flip" text-color="white">
             <q-card-actions class="float-right">
@@ -253,6 +267,14 @@ export default {
       this.add.ID++
     },
     flipFormOut () {
+      if (this.add.name === '' && this.add.email === '' && this.add.phone === '') {
+        this.$store.commit('alert')
+        if (this.$store.state.alert === true) {
+          return this.flipAddOut()
+        }
+      } else {
+        this.$store.commit('negateAlert')
+      }
       this.submitting = true
       this.percentage = 0
 
@@ -290,6 +312,7 @@ export default {
     },
     closeForm () {
       clearInterval(this.interval)
+      this.$store.commit('negateAlert')
       this.submitting = false
       this.percentage = 0
       document.getElementById('new').style.display = 'none'
@@ -324,6 +347,9 @@ export default {
         this.added[index].saving = false
       }, 1500)
     }
+  },
+  mounted () {
+    this.$store.commit('negateAlert')
   }
 }
 </script>

@@ -10,8 +10,15 @@ const store = new Vuex.Store({
     example
   },
   state: {
+    alert: false
   },
   mutations: {
+    alert (state) {
+      state.alert = true
+    },
+    negateAlert (state) {
+      state.alert = false
+    }
   }
 })
 
