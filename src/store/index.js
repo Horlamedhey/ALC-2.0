@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   state: {
     add: {
       ID: 0,
-      name: 'eafed',
+      name: '',
       email: '',
       phone: '',
       img: '',
@@ -44,10 +44,8 @@ const store = new Vuex.Store({
     populateAdded (state, value) {
       state.added.push(value)
     },
-    addedToStorage (state) {
+    addedToStorageNSaved (state) {
       LocalStorage.set('added', state.added)
-    },
-    fetchToSaved (state) {
       state.saved = LocalStorage.get.item('added')
     },
     savedToAdded (state) {
@@ -56,9 +54,20 @@ const store = new Vuex.Store({
       }
       state.add.ID = state.saved.length
     },
+    fetchToSaved (state) {
+      state.saved = LocalStorage.get.item('added')
+      state.saved.forEach((v, i, a) => {
+        v.ID = 'card-' + (i + 1)
+      })
+      state.added.forEach((v, i, a) => {
+        v.ID = 'card-' + (i + 1)
+      })
+      state.add.ID = state.saved.length
+    },
     remove (state, index) {
-      state.saved.splice(index, 1)
+      state.added.splice(index, 1)
       LocalStorage.set('added', state.added)
+      state.add.ID = state.saved.length
     },
     edit (state, index) {
       state.saved[index].edit = true

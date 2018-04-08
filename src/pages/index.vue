@@ -1,6 +1,5 @@
 <template>
   <q-page padding class="row q-mt-sm">
-    <q-btn @click="test" class="fixed" style="top: 5pc; left:3pc; z-index:999999999999999;">test</q-btn>
     <transition
       enter-active-class="animated flip"
       leave-active-class="animated flipOutY"
@@ -156,7 +155,6 @@ export default {
       document.getElementById('add').style.zIndex = '2'
     },
     flipFormOut () {
-      // let added = this.$store.state.added
       let add = this.$store.state.add
       if (add.name === '' && add.email === '' && add.phone === '') {
         this.$store.commit('alert')
@@ -191,8 +189,7 @@ export default {
               saving
             }
           )
-          this.$store.commit('addedToStorage')
-          this.$store.commit('fetchToSaved')
+          this.$store.commit('addedToStorageNSaved')
           document.getElementById('new').style.display = 'none'
           document.getElementById('add').style.display = 'none'
           document.getElementById('add').style.display = 'block'
@@ -215,6 +212,7 @@ export default {
     },
     remove (index) {
       this.$store.commit('remove', index)
+      this.$store.commit('fetchToSaved')
     },
     edit (index) {
       this.$store.commit('edit', index)
@@ -232,323 +230,9 @@ export default {
     },
     cancelEdit (index) {
       this.$store.commit('cancelEdit', index)
-    },
-    test () {
-      if (this.added[0] === undefined) {
-        this.added.push(
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          },
-          {
-            ID: 'card-1',
-            edit: false,
-            email: 'dz',
-            img: '',
-            name: '',
-            phone: '',
-            saving: false
-          }
-        )
-      } else {
-        this.added = []
-      }
     }
   },
-  mounted () {
+  created () {
     //  This is to empty the contact create form after loading
     this.$store.commit('emptyAdd')
     this.$store.commit('negateAlert')
@@ -656,12 +340,12 @@ export default {
 #new, #edit
   overflow hidden
   white-space nowrap
-cards_colors = ( red blue green yellow pink purple #1a1aff #993366 #66ffff #99cc00 #ff9900 #669900 teal #333300 #0099cc #ff00ff )
+cards_colors = ( red blue green pink purple #1a1aff #993366 #66ffff #99cc00 #ff9900 #669900 teal #333300 #0099cc #ff00ff )
 random(min,max)
   return floor(math(0, 'random')*(max - min + 1) + min)
 for num in (1..1000)
   #card-{num}
-    background cards_colors[random(0, 15)]
+    background cards_colors[random(0, 14)]
 .animated
   -webkit-animation-duration 1s
   animation-duration 1s
