@@ -1,8 +1,8 @@
 {
-  "name": "ccreations",
+  "name": "Flip 'n' Add",
   "version": "1.0.0",
   "description": "A community App",
-  "productName": "C4CREATION",
+  "productName": "Flip 'n' Add",
   "cordovaId": "123",
   "author": "Variable",
   "private": true,
@@ -16,6 +16,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
+    "devtron": "1.4.0",
+    "electron": "1.8.3",
+    "electron-debug": "1.5.0",
+    "electron-devtools-installer": "2.2.1",
+    "electron-packager": "11.1.0",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^3.0.0",

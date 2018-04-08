@@ -1,80 +1,21 @@
 <template>
   <q-page padding class="row">
-      <transition
-        enter-active-class="animated flip"
-        leave-active-class="animated flipOutY"
-        appear>
-        <q-alert
-          v-if="$store.state.alert"
-          style="left: 45pc; top: 4pc"
-          type="negative"
-          appear
-          :actions="[{ label: 'Dismiss', handler: () => { $store.commit('negateAlert') } }]"
-          class="q-mb-sm fixed">
-          Please input valid details
-        </q-alert>
-      </transition>
-    <div v-for="(contact,index) in added" :key="contact.id">
-        <q-card :id="contact.ID" class="cards animated flip" text-color="white">
-            <q-card-actions class="float-right">
-              <q-fab icon="more_vert" direction="down" push glossy>
-                <q-fab-action color="secondary" @click="edit(index)" push glossy icon="edit">
-                  <q-tooltip anchor="top right" self="bottom left">
-                    Edit
-                  </q-tooltip>
-                </q-fab-action>
-                <q-fab-action color="primary" @click="remove(index)" push glossy icon="delete">
-                  <q-tooltip anchor="top right" self="bottom left">
-                    Delete
-                  </q-tooltip>
-                </q-fab-action>
-              </q-fab>
-            </q-card-actions>
-            <q-card-media>
-              <img src="statics/quasar-logo.png" alt="">
-            </q-card-media>
-            <q-card-title>
-              {{contact.name}}
-            <q-card-separator />
-            </q-card-title>
-            <q-card-main>
-              <p>{{contact.email}}</p>
-              <p>{{contact.phone}}</p>
-            </q-card-main>
-            <q-card-separator />
-            <q-card-actions class="justify-around">
-              <q-btn class="col call" flat><i class="fa fa-phone"></i></q-btn>
-              <q-btn class="col mail" flat><i class="fa fa-envelope"></i></q-btn>
-            </q-card-actions>
-          </q-card>
-          <div id="edit" class="animated flip" v-if="contact.edit">
-              <q-card>
-                <span id="span">
-                  <p>Select an image:</p>
-                  <input type="file" id="upload" extensions=".gif,.jpg,.jpeg,.png"/>
-                </span>
-                <q-card-separator/>
-                <q-card-main>
-                  <q-input type="text"
-                  float-label="Name" clearable
-                  v-model="contact.name" @keyup.enter="editSave(index)"/>
-                  <q-input type="email"
-                  float-label="Email" clearable
-                  v-model="contact.email" @keyup.enter="editSave(index)"/>
-                  <q-input type="tel"
-                  float-label="Phone" clearable
-                  v-model="contact.phone" @keyup.enter="editSave(index)"/>
-                </q-card-main>
-                <q-card-separator/>
-                <q-card-actions class="justify-around">
-                  <q-btn @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
-                    <q-spinner-pie slot="loading" />
-                  </q-btn>
-                  <q-btn @click="canceleEdit(index)" color="secondary" label="Cancel" />
-                </q-card-actions>
-              </q-card>
-            </div>
-        </div>
+    <q-btn @click="test" class="fixed" style="top: 5pc; left:3pc; z-index:999999999999999;">test</q-btn>
+    <transition
+      enter-active-class="animated flip"
+      leave-active-class="animated flipOutY"
+      appear>
+      <q-alert
+        v-if="$store.state.alert"
+        style="left: 45pc; top: 4pc"
+        type="negative"
+        appear
+        :actions="[{ label: 'Dismiss', handler: () => { $store.commit('negateAlert') } }]"
+        class="q-mb-sm fixed">
+        Please input valid details
+      </q-alert>
+    </transition>
+    <card/>
     <div id="start">
       <div id="new" class="animated flip">
         <q-card>
@@ -87,7 +28,7 @@
             style="right: 15px; top: 7px" />
           <span id="span">
             <p>Select an image:</p>
-            <input @change="putImage" type="file" id="upload" extensions=".gif,.jpg,.jpeg,.png"/>
+            <input type="file" id="upload" extensions=".gif,.jpg,.jpeg,.png"/>
           </span>
         <q-card-separator/>
         <q-card-main>
@@ -96,21 +37,21 @@
             float-label="Name" clearable autocomplete
             :loading="loadingName" @focus="loadingName = true"
             @blur="loadingName = false"
-             @keyup.enter="flipFormOut" v-model="add.name"/>
+             @keyup.enter="flipFormOut" v-model="name"/>
           </q-field>
           <q-field :error="error" error-label="Sorry, that email already exist.">
             <q-input type="email"
             float-label="Email" clearable autocomplete
             :loading="loadingEmail" @focus="loadingEmail = true"
             @blur="loadingEmail = false"
-             @keyup.enter="flipFormOut" v-model="add.email"/>
+             @keyup.enter="flipFormOut" v-model="email"/>
           </q-field>
           <q-field :error="error" error-label="Sorry, that phone already exist.">
             <q-input type="tel"
             float-label="Phone" clearable autocomplete
             :loading="loadingPhone" @focus="loadingPhone = true"
             @blur="loadingPhone = false"
-             @keyup.enter="flipFormOut" v-model="add.phone"/>
+             @keyup.enter="flipFormOut" v-model="phone"/>
           </q-field>
         </q-card-main>
         <q-card-separator/>
@@ -131,6 +72,445 @@
     </div>
   </q-page>
 </template>
+
+<script>
+import Card from 'components/Card'
+export default {
+  components: {
+    Card
+  },
+  name: 'PageIndex',
+  data () {
+    return {
+      submitting: false,
+      percentage: 0,
+      error: false,
+      url: 'http://localhost:8000/contacts',
+      loadingName: false,
+      loadingEmail: false,
+      loadingPhone: false
+    }
+  },
+  methods: {
+    flipAddOut () {
+      document.getElementById('new').style.display = 'block'
+      // document.getElementById('add').style.display = 'none'
+      document.getElementById('new').style.zIndex = '3'
+      document.getElementById('add').style.zIndex = '2'
+    },
+    flipFormOut () {
+      // let added = this.$store.state.added
+      let add = this.$store.state.add
+      if (add.name === '' && add.email === '' && add.phone === '') {
+        this.$store.commit('alert')
+        if (this.$store.state.alert === true) {
+          return this.flipAddOut()
+        }
+      } else {
+        this.$store.commit('negateAlert')
+      }
+      this.submitting = true
+      this.percentage = 0
+
+      // we simulate progress here
+      this.interval = setInterval(() => {
+        // adding a random amount of percentage
+        this.percentage += Math.floor(Math.random() * 10 + 17)
+
+        // and when we are done...
+        if (this.percentage >= 100) {
+          clearInterval(this.interval)
+          this.$store.commit('addId')
+          let {ID, name, email, phone, img, edit, saving} = this.add
+          ID = 'card-' + ID
+          this.$store.commit('populateAdded',
+            {
+              ID,
+              name,
+              email,
+              phone,
+              img,
+              edit,
+              saving
+            }
+          )
+          this.$store.commit('addedToStorage')
+          this.$store.commit('fetchToSaved')
+          document.getElementById('new').style.display = 'none'
+          document.getElementById('add').style.display = 'none'
+          document.getElementById('add').style.display = 'block'
+          //  This is to empty the contact create form after using its content
+          this.$store.commit('emptyAdd')
+          this.submitting = false
+        }
+      }, 700)
+    },
+    closeForm () {
+      clearInterval(this.interval)
+      this.$store.commit('negateAlert')
+      this.submitting = false
+      this.percentage = 0
+      document.getElementById('new').style.display = 'none'
+      document.getElementById('add').style.display = 'none'
+      document.getElementById('add').style.display = 'block'
+      //  This is to empty the contact create form after closing the form
+      this.$store.commit('emptyAdd')
+    },
+    test () {
+      if (this.added[0] === undefined) {
+        this.added.push(
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          },
+          {
+            ID: 'card-1',
+            edit: false,
+            email: 'dz',
+            img: '',
+            name: '',
+            phone: '',
+            saving: false
+          }
+        )
+      } else {
+        this.added = []
+      }
+    }
+  },
+  mounted () {
+    //  This is to empty the contact create form after loading
+    this.$store.commit('emptyAdd')
+    this.$store.commit('negateAlert')
+    this.$store.commit('fetchToSaved')
+    this.$store.commit('savedToAdded')
+  },
+  computed: {
+    add: {
+      get () {
+        return this.$store.state.add
+      }
+    },
+    name: {
+      get () {
+        return this.$store.state.add.name
+      },
+      set (value) {
+        this.$store.commit('updateName', value)
+      }
+    },
+    email: {
+      get () {
+        return this.$store.state.add.email
+      },
+      set (value) {
+        this.$store.commit('updateEmail', value)
+      }
+    },
+    phone: {
+      get () {
+        return this.$store.state.add.phone
+      },
+      set (value) {
+        this.$store.commit('updatePhone', value)
+      }
+    }
+  }
+}
+</script>
 
 <style lang="stylus">
 @import '~variables'
@@ -239,126 +619,3 @@ for num in (1..1000)
     -webkit-animation-timing-function ease-in
     animation-timing-function ease-in
 </style>
-
-<script>
-export default {
-  name: 'PageIndex',
-  data () {
-    return {
-      submitting: false,
-      percentage: 0,
-      add: {
-        ID: 0,
-        name: '',
-        email: '',
-        phone: '',
-        img: '',
-        saving: false,
-        edit: false
-      },
-      added: [],
-      error: false,
-      url: 'http://localhost:8000/contacts',
-      loadingName: false,
-      loadingEmail: false,
-      loadingPhone: false
-    }
-  },
-  methods: {
-    flipAddOut () {
-      document.getElementById('new').style.display = 'block'
-      // document.getElementById('add').style.display = 'none'
-      document.getElementById('new').style.zIndex = '3'
-      document.getElementById('add').style.zIndex = '2'
-      this.add.ID++
-    },
-    flipFormOut () {
-      if (this.add.name === '' && this.add.email === '' && this.add.phone === '') {
-        this.$store.commit('alert')
-        if (this.$store.state.alert === true) {
-          return this.flipAddOut()
-        }
-      } else {
-        this.$store.commit('negateAlert')
-      }
-      this.submitting = true
-      this.percentage = 0
-
-      // we simulate progress here
-      this.interval = setInterval(() => {
-        // adding a random amount of percentage
-        this.percentage += Math.floor(Math.random() * 10 + 17)
-
-        // and when we are done...
-        if (this.percentage >= 100) {
-          clearInterval(this.interval)
-          let {ID, name, email, phone, img, edit, saving} = this.add
-          ID = 'card-' + ID
-          this.added.push(
-            {
-              ID,
-              name,
-              email,
-              phone,
-              img,
-              edit,
-              saving
-            }
-          )
-          document.getElementById('new').style.display = 'none'
-          document.getElementById('add').style.display = 'none'
-          document.getElementById('add').style.display = 'block'
-          this.add.name = ''
-          this.add.email = ''
-          this.add.phone = ''
-          this.add.img = ''
-          this.submitting = false
-        }
-      }, 700)
-    },
-    closeForm () {
-      clearInterval(this.interval)
-      this.$store.commit('negateAlert')
-      this.submitting = false
-      this.percentage = 0
-      document.getElementById('new').style.display = 'none'
-      document.getElementById('add').style.display = 'none'
-      document.getElementById('add').style.display = 'block'
-      this.add.name = ''
-      this.add.email = ''
-      this.add.phone = ''
-      this.add.img = ''
-    },
-    putImage () {
-      let upload = document.querySelector('#upload')
-      var file
-      if (upload.files.length > 0) {
-        file = upload.files[0]
-      }
-      this.add.img = file.name
-    },
-    remove (index) {
-      this.added.splice(index, 1)
-    },
-    edit (index) {
-      this.added[index].edit = true
-    },
-    editSave (index) {
-      this.added[index].saving = true
-
-      // we simulate progress here
-      setTimeout(() => {
-        this.added[index].edit = false
-        // DON'T forget to reset loading state:
-        this.added[index].saving = false
-      }, 1500)
-    },
-    canceleEdit (index) {
-      this.added[index].edit = false
-    }
-  },
-  mounted () {
-    this.$store.commit('negateAlert')
-  }
-}
-</script>

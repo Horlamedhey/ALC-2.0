@@ -77,14 +77,17 @@ module.exports = function (ctx) {
         'QUploader',
         'QSpinner',
         'QSpinnerPie',
-        'QAlert'
+        'QAlert',
+        'QPageSticky'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'BackToTop'
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'LocalStorage'
       ]
     },
     // animations: 'all' --- includes all animations
