@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="row justify-around content-start">
+  <q-page padding class="row q-mt-sm">
     <q-btn @click="test" class="fixed" style="top: 5pc; left:3pc; z-index:999999999999999;">test</q-btn>
     <transition
       enter-active-class="animated flip"
@@ -7,11 +7,11 @@
       appear>
       <q-alert
         v-if="$store.state.alert"
-        style="top: 4pc; z-index: 999999999999999999999;"
+        style="top: 5pc; z-index: 999999999999999999999;"
         type="negative"
         appear
         :actions="[{ label: 'Dismiss', handler: () => { $store.commit('negateAlert') } }]"
-        class="q-mb-sm fixed">
+        class="q-mb-sm fixed-center col-auto" self-center>
         Please input valid details
       </q-alert>
     </transition>
@@ -72,7 +72,7 @@
             <q-btn @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
               <q-spinner-pie slot="loading" />
             </q-btn>
-            <q-btn @click="canceleEdit(index)" color="secondary" label="Cancel" />
+            <q-btn @click="cancelEdit(index)" color="secondary" label="Cancel" />
           </q-card-actions>
         </q-card>
       </div>
@@ -135,11 +135,7 @@
 </template>
 
 <script>
-import Card from 'components/Card'
 export default {
-  components: {
-    Card
-  },
   name: 'PageIndex',
   data () {
     return {
@@ -218,23 +214,24 @@ export default {
       this.$store.commit('emptyAdd')
     },
     remove (index) {
-      this.contacts.splice(index, 1)
+      this.$store.commit('remove', index)
     },
     edit (index) {
-      this.contacts[index].edit = true
+      this.$store.commit('edit', index)
     },
     editSave (index) {
-      this.added[index].saving = true
+      this.$store.commit('editSave', index)
 
       // we simulate progress here
       setTimeout(() => {
-        this.added[index].edit = false
+        this.$store.commit('cancelEdit', index)
         // DON'T forget to reset loading state:
-        this.added[index].saving = false
+        this.$store.commit('endSave', index)
+        this.$store.commit('save')
       }, 1500)
     },
-    canceleEdit (index) {
-      this.added[index].edit = false
+    cancelEdit (index) {
+      this.$store.commit('cancelEdit', index)
     },
     test () {
       if (this.added[0] === undefined) {
@@ -557,6 +554,7 @@ export default {
     this.$store.commit('negateAlert')
     this.$store.commit('fetchToSaved')
     this.$store.commit('savedToAdded')
+    // this.$store.commit('cancelAllEdit')
   },
   computed: {
     add: {
@@ -611,7 +609,7 @@ export default {
 #add
   background $primary
   position absolute
-  height 22.4pc
+  height 23.4pc
   width 100%
   cursor pointer
   z-index 2
@@ -623,7 +621,7 @@ export default {
   z-index 1
   background $info
   width 100%
-  height 22.4pc
+  height 23.4pc
   padding-top 4.5pc
   transition: all 0.9s ease-in-out
   transform: rotateX(-180deg)
@@ -647,9 +645,8 @@ export default {
   padding: 15px
 #cards
   position relative
-  height fit-content
 .cards
-  height 22.4pc
+  height 23.4pc
 #edit
   margin-top 0.3pc
   background #000

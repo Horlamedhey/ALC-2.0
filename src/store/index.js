@@ -56,6 +56,28 @@ const store = new Vuex.Store({
       }
       state.add.ID = state.saved.length
     },
+    remove (state, index) {
+      state.saved.splice(index, 1)
+      LocalStorage.set('added', state.added)
+    },
+    edit (state, index) {
+      state.saved[index].edit = true
+      LocalStorage.set('added', state.added)
+    },
+    editSave (state, index) {
+      state.saved[index].saving = true
+    },
+    endSave (state, index) {
+      state.saved[index].saving = false
+      LocalStorage.set('added', state.added)
+    },
+    cancelEdit (state, index) {
+      state.saved[index].edit = false
+      LocalStorage.set('added', state.added)
+    },
+    save (state) {
+      LocalStorage.set('added', state.added)
+    },
     alert (state) {
       state.alert = true
     },
