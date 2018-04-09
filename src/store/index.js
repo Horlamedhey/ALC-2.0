@@ -33,10 +33,14 @@ const store = new Vuex.Store({
     updatePhone (state, value) {
       state.add.phone = value
     },
+    imgUpload (state, value) {
+      state.add.img = value
+    },
     emptyAdd (state) {
       state.add.name = ''
       state.add.email = ''
       state.add.phone = ''
+      state.add.img = ''
     },
     addId (state) {
       state.add.ID++
@@ -83,6 +87,12 @@ const store = new Vuex.Store({
     cancelEdit (state, index) {
       state.saved[index].edit = false
       LocalStorage.set('added', state.added)
+    },
+    cancelAllEdit (state, index) {
+      state.saved.forEach((v, i, a) => {
+        v.edit = false
+        LocalStorage.set('added', state.added)
+      })
     },
     save (state) {
       LocalStorage.set('added', state.added)

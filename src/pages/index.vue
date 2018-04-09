@@ -31,7 +31,7 @@
           </q-fab>
         </q-card-actions>
         <q-card-media>
-          <img src="statics/quasar-logo.png" alt="">
+          <img :src="contact.img" class="dp" alt="dp" style="height: 128px; width:128px; border-radius: 150px">
         </q-card-media>
         <q-card-title>
           {{contact.name}}
@@ -87,8 +87,11 @@
             icon="close"
             style="right: 15px; top: 7px" />
           <span id="span">
-            <p>Select an image:</p>
-            <input type="file" id="upload" extensions=".gif,.jpg,.jpeg,.png"/>
+            <q-btn @click="pick">
+              Select an image
+            </q-btn>
+            <p id="previewName"></p>
+            <input type="file" id="upload" @change="upload" accept="image/*"/>
           </span>
         <q-card-separator/>
         <q-card-main>
@@ -138,6 +141,7 @@ export default {
   name: 'PageIndex',
   data () {
     return {
+      input: null,
       submitting: false,
       percentage: 0,
       error: false,
@@ -150,13 +154,27 @@ export default {
   methods: {
     flipAddOut () {
       document.getElementById('new').style.display = 'block'
-      // document.getElementById('add').style.display = 'none'
       document.getElementById('new').style.zIndex = '3'
       document.getElementById('add').style.zIndex = '2'
     },
+    pick () {
+      document.querySelector('#upload').click()
+    },
+    upload () {
+      var store = this.$store
+      var reader = new FileReader()
+      var file = document.querySelector('#upload').files[0]
+      let previewName = document.querySelector('#previewName')
+      previewName.textContent = 'name: ' + file.name + '.'
+      reader.onload = function () {
+        let image = reader.result
+        store.commit('imgUpload', image)
+      }
+      reader.readAsDataURL(file)
+    },
     flipFormOut () {
       let add = this.$store.state.add
-      if (add.name === '' && add.email === '' && add.phone === '') {
+      if (add.name === '' && add.email === '' && add.phone === '' && add.img === '') {
         this.$store.commit('alert')
         if (this.$store.state.alert === true) {
           return this.flipAddOut()
@@ -238,7 +256,7 @@ export default {
     this.$store.commit('negateAlert')
     this.$store.commit('fetchToSaved')
     this.$store.commit('savedToAdded')
-    // this.$store.commit('cancelAllEdit')
+    this.$store.commit('cancelAllEdit')
   },
   computed: {
     add: {
@@ -310,19 +328,22 @@ export default {
   transition: all 0.9s ease-in-out
   transform: rotateX(-180deg)
   transform-style preserve-3d
+#upload
+  opacity 0
+  height 0px;
+#previewName
+  margin-bottom 0
+  margin-top 0.5pc
 #new p, #new .q-uploader
   padding 0pc 1pc
 #new .q-uploader
   margin-bottom 2pc
 #new .q-btn
   display block
-  margin 0.3pc auto
+  margin 0.1pc auto
   padding 10px 20px
 .q-card-media
   padding: 20px
-.q-card-media img
-  margin: 0 auto
-  width: auto
 .q-card-actions .call
   padding: $pad
 .menu
@@ -331,6 +352,7 @@ export default {
   position relative
 .cards
   height 23.4pc
+  min-width 15pc
 #edit
   margin-top 0.3pc
   background #000

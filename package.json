@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A community App",
   "productName": "Flip 'n' Add",
-  "cordovaId": "123",
+  "cordovaId": "com.cordova.quasar.flipnadd",
   "author": "Variable",
   "private": true,
   "scripts": {

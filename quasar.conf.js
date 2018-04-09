@@ -77,12 +77,15 @@ module.exports = function (ctx) {
         'QUploader',
         'QSpinner',
         'QSpinnerPie',
+        'QSpinnerBars',
         'QAlert',
-        'QPageSticky'
+        'QPageSticky',
+        'QInfiniteScroll'
       ],
       directives: [
         'Ripple',
-        'BackToTop'
+        'BackToTop',
+        'ScrollFire'
       ],
       // Quasar plugins
       plugins: [
@@ -154,7 +157,11 @@ module.exports = function (ctx) {
         // protocol: 'myapp://path',
 
         // Window only
-        // win32metadata: { ... }
+        win32metadata: {
+          CompanyName: 'Variable inc.',
+          OriginalFilename: 'Flip \'n\' Add.exe'
+
+        }
       }
     },
 
