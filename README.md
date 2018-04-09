@@ -1,3 +1,3 @@
-# Flip 'n' Join
+# Flip 'n' Add
 
 > WIP

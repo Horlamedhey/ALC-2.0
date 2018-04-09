@@ -74,21 +74,34 @@ module.exports = function (ctx) {
         'QParallax',
         'QAjaxBar',
         'QTooltip',
-        'QUploader'
+        'QUploader',
+        'QSpinner',
+        'QSpinnerPie',
+        'QSpinnerBars',
+        'QAlert',
+        'QPageSticky',
+        'QInfiniteScroll'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'BackToTop',
+        'ScrollFire'
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'LocalStorage'
       ]
     },
     // animations: 'all' --- includes all animations
     animations: [
       'fadeIn',
       'fadeOut',
-      'bounce'
+      'bounce',
+      'bounceInLeft',
+      'bounceOutRight',
+      'flip',
+      'flipOutY'
     ],
     pwa: {
       cacheExt: 'js,html,css,ttf,eot,otf,woff,woff2,json,svg,gif,jpg,jpeg,png,wav,ogg,webm,flac,aac,mp4,mp3',
@@ -144,7 +157,11 @@ module.exports = function (ctx) {
         // protocol: 'myapp://path',
 
         // Window only
-        // win32metadata: { ... }
+        win32metadata: {
+          CompanyName: 'Variable inc.',
+          OriginalFilename: 'Flip \'n\' Add.exe'
+
+        }
       }
     },
 
