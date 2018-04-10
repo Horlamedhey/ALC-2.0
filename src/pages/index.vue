@@ -14,10 +14,15 @@
         Please input valid details
       </q-alert>
     </transition>
-    <div v-for="(contact,index) in contacts" :key="contact.id">
+    <div :id="contact.ID + '-div'" v-for="(contact,index) in contacts" :key="contact.id">
       <q-card :id="contact.ID" class="cards animated flip" text-color="white">
         <q-card-actions class="float-right">
           <q-fab icon="more_vert" direction="down" push glossy>
+            <q-fab-action color="cyan-9" @click="view(index)" push glossy icon="info">
+              <q-tooltip anchor="top right" self="bottom left">
+                View
+              </q-tooltip>
+            </q-fab-action>
             <q-fab-action color="secondary" @click="edit(index)" push glossy icon="edit">
               <q-tooltip anchor="top right" self="bottom left">
                 Edit
@@ -51,8 +56,13 @@
       <div id="edit" class="animated flip" v-if="contact.edit">
         <q-card>
           <span id="span">
-            <p>Select an image:</p>
-            <input type="file" id="upload" extensions=".gif,.jpg,.jpeg,.png"/>
+            <q-btn class="text-teal" @click="pickEdit" icon="add_a_photo" style="width:60%; display: block; margin:8px auto;" flat/>
+            <q-collapsible class="text-teal" label="view selected image" collapse-icon="panorama" v-if="contact.img">
+              <pre>Name: {{contact.imgName}}</pre>
+              <img :src="contact.img" alt="">
+              <q-btn icon="delete" @click="$store.commit('unImgEdit', index)" flat class="float-right"/>
+            </q-collapsible>
+            <input style="display:none" type="file" id="uploadEdit" @change="uploadEdit(index)" accept="image/*"/>
           </span>
           <q-card-separator/>
           <q-card-main>
@@ -76,6 +86,32 @@
         </q-card>
       </div>
     </div>
+    <q-modal minimized v-model="opened" enter-class="animated flip" leave-class="animated flipOutY">
+      <div id="modal">
+        <q-card class="cards animated flip" text-color="black" color="teal">
+          <q-card-media>
+              <img :src="modimg" class="dp" alt="dp" style="height: 128px; width:128px; border-radius: 150px">
+          </q-card-media>
+          <q-card-title>
+              {{modname}}
+          </q-card-title>
+          <q-card-separator />
+          <q-card-main>
+              <p>{{modemail}}</p>
+              <q-card-separator />
+              <p>{{modphone}}</p>
+              <q-card-separator />
+              <p color="light">created on:</p>
+              <p>{{moddate}}</p>
+              <p>{{modtime}}</p>
+          </q-card-main>
+        </q-card>
+      </div>
+      <q-btn
+        color="primary"
+        @click="opened = false"
+        label="Close" />
+    </q-modal>
     <div id="start">
       <div id="new" class="animated flip">
         <q-card>
@@ -87,11 +123,13 @@
             icon="close"
             style="right: 15px; top: 7px" />
           <span id="span">
-            <q-btn @click="pick">
-              Select an image
-            </q-btn>
-            <p id="previewName"></p>
-            <input type="file" id="upload" @change="upload" accept="image/*"/>
+            <q-btn @click="pick" icon="add_a_photo" style="width:60%;" flat/>
+            <q-collapsible label="view selected image" v-if="img" collapse-icon="panorama">
+              <pre>Name: {{imgName}}</pre>
+              <img :src="img" alt="">
+              <q-btn icon="cancel" @click="$store.commit('imgRemove')" flat class="float-right"/>
+            </q-collapsible>
+            <input type="file" id="upload" @change="upload" style="display:none" accept="image/*"/>
           </span>
         <q-card-separator/>
         <q-card-main>
@@ -141,7 +179,13 @@ export default {
   name: 'PageIndex',
   data () {
     return {
-      input: null,
+      modimg: null,
+      modname: null,
+      modemail: null,
+      modphone: null,
+      moddate: null,
+      modtime: null,
+      opened: false,
       submitting: false,
       percentage: 0,
       error: false,
@@ -156,19 +200,23 @@ export default {
       document.getElementById('new').style.display = 'block'
       document.getElementById('new').style.zIndex = '3'
       document.getElementById('add').style.zIndex = '2'
+      let date = new Date()
+      console.log(date.toDateString())
+      console.log(date.toLocaleTimeString())
     },
     pick () {
       document.querySelector('#upload').click()
+    },
+    pickEdit () {
+      document.querySelector('#uploadEdit').click()
     },
     upload () {
       var store = this.$store
       var reader = new FileReader()
       var file = document.querySelector('#upload').files[0]
-      let previewName = document.querySelector('#previewName')
-      previewName.textContent = 'name: ' + file.name + '.'
       reader.onload = function () {
-        let image = reader.result
-        store.commit('imgUpload', image)
+        let img = {img: reader.result, imgName: file.name}
+        store.commit('imgUpload', img)
       }
       reader.readAsDataURL(file)
     },
@@ -194,7 +242,10 @@ export default {
         if (this.percentage >= 100) {
           clearInterval(this.interval)
           this.$store.commit('addId')
-          let {ID, name, email, phone, img, edit, saving} = this.add
+          let timeStamp = new Date()
+          let date = timeStamp.toDateString()
+          let time = timeStamp.toLocaleTimeString()
+          let {ID, name, email, phone, img, imgName, edit, saving} = this.add
           ID = 'card-' + ID
           this.$store.commit('populateAdded',
             {
@@ -203,6 +254,9 @@ export default {
               email,
               phone,
               img,
+              imgName,
+              datestamp: 'Date: ' + date,
+              timestamp: 'Time: ' + time,
               edit,
               saving
             }
@@ -235,6 +289,16 @@ export default {
     edit (index) {
       this.$store.commit('edit', index)
     },
+    uploadEdit (index) {
+      var store = this.$store
+      var reader = new FileReader()
+      var file = document.querySelector('#uploadEdit').files[0]
+      reader.onload = function () {
+        let imgEdit = {img: reader.result, imgName: file.name, card: index}
+        store.commit('imgEdit', imgEdit)
+      }
+      reader.readAsDataURL(file)
+    },
     editSave (index) {
       this.$store.commit('editSave', index)
 
@@ -248,6 +312,15 @@ export default {
     },
     cancelEdit (index) {
       this.$store.commit('cancelEdit', index)
+    },
+    view (index) {
+      this.modimg = this.$store.state.saved[index].img
+      this.modname = this.$store.state.saved[index].name
+      this.modemail = this.$store.state.saved[index].email
+      this.modphone = this.$store.state.saved[index].phone
+      this.moddate = this.$store.state.saved[index].datestamp
+      this.modtime = this.$store.state.saved[index].timestamp
+      this.opened = true
     }
   },
   created () {
@@ -288,6 +361,16 @@ export default {
         this.$store.commit('updatePhone', value)
       }
     },
+    img: {
+      get () {
+        return this.$store.state.add.img
+      }
+    },
+    imgName: {
+      get () {
+        return this.$store.state.add.imgName
+      }
+    },
     contacts: {
       get () {
         return this.$store.state.saved
@@ -323,14 +406,10 @@ export default {
   z-index 1
   background $info
   width 100%
-  height 23.4pc
   padding-top 4.5pc
   transition: all 0.9s ease-in-out
   transform: rotateX(-180deg)
   transform-style preserve-3d
-#upload
-  opacity 0
-  height 0px;
 #previewName
   margin-bottom 0
   margin-top 0.5pc
