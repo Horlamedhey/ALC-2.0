@@ -324,6 +324,7 @@ export default {
     }
   },
   created () {
+    this.$q.addressbarColor.set()
     //  This is to empty the contact create form after loading
     this.$store.commit('emptyAdd')
     this.$store.commit('negateAlert')

@@ -7,6 +7,7 @@
         :inverted="$q.theme === 'ios'"
       >
         <q-toolbar-title>
+          <img src="statics/icons/favicon-32x32.png" alt="">
           Flip 'n' Add
           <div slot="subtitle">Connecting you with millions of user</div>
         </q-toolbar-title><q-btn
