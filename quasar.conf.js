@@ -80,17 +80,22 @@ module.exports = function (ctx) {
         'QSpinnerBars',
         'QAlert',
         'QPageSticky',
-        'QInfiniteScroll'
+        'QInfiniteScroll',
+        'QCollapsible',
+        'QModal',
+        'QModalLayout'
       ],
       directives: [
         'Ripple',
         'BackToTop',
-        'ScrollFire'
+        'ScrollFire',
+        'CloseOverlay'
       ],
       // Quasar plugins
       plugins: [
         'Notify',
-        'LocalStorage'
+        'LocalStorage',
+        'AddressbarColor'
       ]
     },
     // animations: 'all' --- includes all animations
@@ -151,16 +156,18 @@ module.exports = function (ctx) {
       },
       packager: {
         // OS X / Mac App Store
-        // appBundleId: '',
-        // appCategoryType: '',
-        // osxSign: '',
-        // protocol: 'myapp://path',
+        appBundleId: 'com.app.FlipnAdd',
+        appCategoryType: 'app-category-type=public.app-category.utilities',
+        osxSign: true,
+        protocol: 'myapp://path',
 
         // Window only
         win32metadata: {
           CompanyName: 'Variable inc.',
-          OriginalFilename: 'Flip \'n\' Add.exe'
-
+          FileDescription: '',
+          OriginalFilename: 'Flip\'n\'Add',
+          ProductName: '',
+          InternalName: ''
         }
       }
     },

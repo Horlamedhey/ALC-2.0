@@ -16,6 +16,7 @@ const store = new Vuex.Store({
       email: '',
       phone: '',
       img: '',
+      imgName: '',
       saving: false,
       edit: false
     },
@@ -34,13 +35,19 @@ const store = new Vuex.Store({
       state.add.phone = value
     },
     imgUpload (state, value) {
-      state.add.img = value
+      state.add.img = value.img
+      state.add.imgName = value.imgName
+    },
+    imgRemove (state) {
+      state.add.img = ''
+      state.add.imgName = ''
     },
     emptyAdd (state) {
       state.add.name = ''
       state.add.email = ''
       state.add.phone = ''
       state.add.img = ''
+      state.add.imgName = ''
     },
     addId (state) {
       state.add.ID++
@@ -56,17 +63,18 @@ const store = new Vuex.Store({
       if (state.saved !== null) {
         state.added = state.saved
       }
-      state.add.ID = state.saved.length
     },
     fetchToSaved (state) {
       state.saved = LocalStorage.get.item('added')
-      state.saved.forEach((v, i, a) => {
-        v.ID = 'card-' + (i + 1)
-      })
+      if (state.saved !== null) {
+        state.saved.forEach((v, i, a) => {
+          v.ID = 'card-' + (i + 1)
+        })
+        state.add.ID = state.saved.length
+      }
       state.added.forEach((v, i, a) => {
         v.ID = 'card-' + (i + 1)
       })
-      state.add.ID = state.saved.length
     },
     remove (state, index) {
       state.added.splice(index, 1)
@@ -77,6 +85,14 @@ const store = new Vuex.Store({
       state.saved[index].edit = true
       LocalStorage.set('added', state.added)
     },
+    imgEdit (state, value) {
+      state.saved[value.card].img = value.img
+      state.saved[value.card].imgName = value.imgName
+    },
+    unImgEdit (state, index) {
+      state.saved[index].img = ''
+      state.saved[index].imgName = ''
+    },
     editSave (state, index) {
       state.saved[index].saving = true
     },
@@ -86,13 +102,14 @@ const store = new Vuex.Store({
     },
     cancelEdit (state, index) {
       state.saved[index].edit = false
-      LocalStorage.set('added', state.added)
     },
     cancelAllEdit (state, index) {
-      state.saved.forEach((v, i, a) => {
-        v.edit = false
-        LocalStorage.set('added', state.added)
-      })
+      if (state.saved !== null) {
+        state.saved.forEach((v, i, a) => {
+          v.edit = false
+          LocalStorage.set('added', state.added)
+        })
+      }
     },
     save (state) {
       LocalStorage.set('added', state.added)
