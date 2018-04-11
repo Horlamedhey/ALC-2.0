@@ -49,18 +49,18 @@
         </q-card-main>
         <q-card-separator />
         <q-card-actions class="justify-around">
-          <q-btn class="col call" flat><i class="fa fa-phone"></i></q-btn>
-          <q-btn class="col mail" flat><i class="fa fa-envelope"></i></q-btn>
+          <q-btn name="call" class="col call" flat><i class="fa fa-phone"></i></q-btn>
+          <q-btn name="sendMail" class="col mail" flat><i class="fa fa-envelope"></i></q-btn>
         </q-card-actions>
       </q-card>
       <div id="edit" class="animated flip" v-if="contact.edit">
         <q-card>
           <span id="span">
-            <q-btn class="text-teal" @click="pickEdit" icon="add_a_photo" style="width:60%; display: block; margin:8px auto;" flat/>
+            <q-btn name="addImage" class="text-teal" @click="pickEdit" icon="add_a_photo" style="width:60%; display: block; margin:8px auto;" flat/>
             <q-collapsible class="text-teal" label="view selected image" collapse-icon="panorama" v-if="contact.img">
               <pre>Name: {{contact.imgName}}</pre>
               <img :src="contact.img" alt="">
-              <q-btn icon="delete" @click="$store.commit('unImgEdit', index)" flat class="float-right"/>
+              <q-btn name="imageRemove" icon="delete" @click="$store.commit('unImgEdit', index)" flat class="float-right"/>
             </q-collapsible>
             <input style="display:none" type="file" id="uploadEdit" @change="uploadEdit(index)" accept="image/*"/>
           </span>
@@ -78,10 +78,10 @@
           </q-card-main>
           <q-card-separator/>
           <q-card-actions class="justify-around">
-            <q-btn @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
+            <q-btn name="saveEdit" @click="editSave(index)" :loading="contact.saving" color="primary" label="Save">
               <q-spinner-pie slot="loading" />
             </q-btn>
-            <q-btn @click="cancelEdit(index)" color="secondary" label="Cancel" />
+            <q-btn name="cancelEdit" @click="cancelEdit(index)" color="secondary" label="Cancel" />
           </q-card-actions>
         </q-card>
       </div>
@@ -108,6 +108,7 @@
         </q-card>
       </div>
       <q-btn
+        name="closeInfo"
         color="primary"
         @click="opened = false"
         label="Close" />
@@ -116,6 +117,7 @@
       <div id="new" class="animated flip">
         <q-card>
           <q-btn
+            name="closeForm"
             round glossy
             color="primary"
             @click="closeForm"
@@ -123,11 +125,11 @@
             icon="close"
             style="right: 15px; top: 7px" />
           <span id="span">
-            <q-btn @click="pick" icon="add_a_photo" style="width:60%;" flat/>
+            <q-btn name="imageUpload" @click="pick" icon="add_a_photo" style="width:60%;" flat/>
             <q-collapsible label="view selected image" v-if="img" collapse-icon="panorama">
               <pre>Name: {{imgName}}</pre>
               <img :src="img" alt="">
-              <q-btn icon="cancel" @click="$store.commit('imgRemove')" flat class="float-right"/>
+              <q-btn name="removeImage" icon="cancel" @click="$store.commit('imgRemove')" flat class="float-right"/>
             </q-collapsible>
             <input type="file" id="upload" @change="upload" style="display:none" accept="image/*"/>
           </span>
@@ -157,7 +159,7 @@
         </q-card-main>
         <q-card-separator/>
         <q-card-actions>
-          <q-btn @click="flipFormOut" :loading="submitting" :percentage="percentage" color="primary" label="Flip">
+          <q-btn name="submit" @click="flipFormOut" :loading="submitting" :percentage="percentage" color="primary" label="Flip">
             <q-spinner-pie slot="loading" />
           </q-btn>
         </q-card-actions>
@@ -324,6 +326,7 @@ export default {
     }
   },
   created () {
+    this.$q.addressbarColor.set()
     //  This is to empty the contact create form after loading
     this.$store.commit('emptyAdd')
     this.$store.commit('negateAlert')
@@ -384,7 +387,6 @@ export default {
 @import '~variables'
 #start
   position relative
-  height 22.4pc
   width 15pc
 .addbg
   background center no-repeat
